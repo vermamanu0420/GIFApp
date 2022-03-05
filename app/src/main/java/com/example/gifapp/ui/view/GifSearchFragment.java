@@ -41,7 +41,7 @@ public class GifSearchFragment extends Fragment {
         if (getArguments() != null) {
             index = getArguments().getInt(ARG_SECTION_NUMBER);
         }
-        gifsSearchViewModel.setIndex(index);
+
     }
 
     @Override
@@ -53,12 +53,7 @@ public class GifSearchFragment extends Fragment {
         View root = binding.getRoot();
 
         final TextView textView = binding.sectionLabel;
-        gifsSearchViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
-            @Override
-            public void onChanged(@Nullable String s) {
-                textView.setText(s);
-            }
-        });
+        gifsSearchViewModel.fetchGifs("smile",0);
         return root;
     }
 
