@@ -1,19 +1,28 @@
 package com.example.gifapp.ui.view;
 
 import android.os.Bundle;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.gifapp.R;
 import com.example.gifapp.databinding.FragmentMainBinding;
+import com.example.gifapp.ui.view.adapter.GifsListAdapter;
 import com.example.gifapp.viewmodel.GifsSearchViewModel;
+
+import java.util.ArrayList;
 
 /**
  * A placeholder fragment containing a simple view.
@@ -24,6 +33,7 @@ public class GifSearchFragment extends Fragment {
 
     private GifsSearchViewModel gifsSearchViewModel;
     private FragmentMainBinding binding;
+    private GifsListAdapter adapter;
 
     public static GifSearchFragment newInstance(int index) {
         GifSearchFragment fragment = new GifSearchFragment();
@@ -37,11 +47,6 @@ public class GifSearchFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         gifsSearchViewModel = new ViewModelProvider(this).get(GifsSearchViewModel.class);
-        int index = 1;
-        if (getArguments() != null) {
-            index = getArguments().getInt(ARG_SECTION_NUMBER);
-        }
-
     }
 
     @Override
@@ -52,8 +57,35 @@ public class GifSearchFragment extends Fragment {
         binding = FragmentMainBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
-        final TextView textView = binding.sectionLabel;
-        gifsSearchViewModel.fetchGifs("smile",0);
+        final RecyclerView recyclerView = binding.gifsList;
+        adapter = new GifsListAdapter(new ArrayList<>(), item -> {
+            Toast.makeText(getActivity(),"clicked",Toast.LENGTH_LONG).show();
+        });
+
+        recyclerView.setLayoutManager(new LinearLayoutManager(root.getContext()));
+        recyclerView.setAdapter(adapter);
+        observerViewModel();
+        binding.searchButton.setOnClickListener(v -> {
+            gifsSearchViewModel.fetchGifs(String.valueOf(binding.searchTextview.getText()), true);
+        });
+
+        binding.searchTextview.setOnEditorActionListener((v, actionId, event) -> {
+            if ((event != null && (event.getKeyCode() == KeyEvent.KEYCODE_ENTER)) || (actionId == EditorInfo.IME_ACTION_DONE)) {
+                binding.searchButton.performClick();
+            }
+            return false;
+        });
+
+        binding.gifsList.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                if (!recyclerView.canScrollVertically(1)) {
+                    gifsSearchViewModel.fetchGifs(binding.searchTextview.getText().toString(), false);
+                }
+            }
+        });
+
         return root;
     }
 
@@ -61,5 +93,21 @@ public class GifSearchFragment extends Fragment {
     public void onDestroyView() {
         super.onDestroyView();
         binding = null;
+    }
+
+    private void observerViewModel() {
+
+        gifsSearchViewModel.getGifMutableLGifLiveData().observe(getViewLifecycleOwner(), items -> {
+            binding.listError.setVisibility(View.GONE);
+            adapter.updateImages(items);
+            binding.loadingView.setVisibility(View.GONE);
+
+            if (items == null || items.size() == 0) {
+                binding.listError.setVisibility(View.VISIBLE);
+                binding.listError.setText(R.string.loadingDataErrorMsg);
+            }
+        });
+
+
     }
 }

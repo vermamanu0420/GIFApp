@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:adjustViewBounds="true"
+        android:id="@+id/gifView"/>
+    <ImageButton
+        android:id="@+id/unFavourite"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:layout_gravity="right"
+        android:background="@drawable/ic_favorite_grey_24"/>
+    <ImageButton
+        android:id="@+id/favourite"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:layout_gravity="right"
+        android:background="@drawable/ic_favorite_red_24"/>
+
+</androidx.cardview.widget.CardView>

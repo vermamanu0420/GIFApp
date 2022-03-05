@@ -23,10 +23,12 @@ import io.reactivex.schedulers.Schedulers;
 
 public class GifsSearchViewModel extends ViewModel {
 
-    private MutableLiveData<List<GifData>> gifMutableLiveData = new MutableLiveData<>();
+    private MutableLiveData<List<GifData>> gifMutableLGifLiveData = new MutableLiveData<>();
     private ArrayList<GifData> currentGifsList = new ArrayList<>();
     private int offset = 0;
     private int LIMIT = 20;
+
+
 
     @Inject
     GifSearchService gifSearchService;
@@ -38,7 +40,7 @@ public class GifsSearchViewModel extends ViewModel {
         DaggerApiComponent.create().inject(this);
     }
 
-    public void fetchGifs(String searchTerm, int offsetVal) {
+    public void fetchGifs(String searchTerm, boolean resetOffeset) {
 
         disposable.add(
                 gifSearchService.getSearchedGifs(searchTerm, offset, LIMIT)
@@ -47,10 +49,13 @@ public class GifsSearchViewModel extends ViewModel {
                         .subscribeWith(new DisposableSingleObserver<GifDataModel>() {
                             @Override
                             public void onSuccess(@NonNull GifDataModel apiGifDataResponse) {
-                                if (offsetVal == 0)
+                                if (resetOffeset){
                                     currentGifsList.clear();
+                                    offset = 0;
+                                }else
+                                    offset += LIMIT;
                                 currentGifsList.addAll(apiGifDataResponse.getData());
-                                gifMutableLiveData.setValue(currentGifsList);
+                                gifMutableLGifLiveData.setValue(currentGifsList);
                             }
 
                             @Override
@@ -59,5 +64,9 @@ public class GifsSearchViewModel extends ViewModel {
                             }
                         })
         );
+    }
+
+    public MutableLiveData<List<GifData>> getGifMutableLGifLiveData() {
+        return gifMutableLGifLiveData;
     }
 }

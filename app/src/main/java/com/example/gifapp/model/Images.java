@@ -4,7 +4,7 @@ import com.google.gson.annotations.SerializedName;
 
 public class Images {
 
-    @SerializedName("downsized_small")
+    @SerializedName("downsized")
     private ImageDetails downsizedSmall;
 
     public ImageDetails getDownsizedSmall() {

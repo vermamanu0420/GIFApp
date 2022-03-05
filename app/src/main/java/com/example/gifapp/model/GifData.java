@@ -42,6 +42,8 @@ public class GifData {
     @SerializedName("images")
     private Images images;
 
+    private boolean IsFavourite;
+
 
     public String getType() {
         return type;
@@ -187,4 +189,11 @@ public class GifData {
         this.images = images;
     }
 
+    public boolean isFavourite() {
+        return IsFavourite;
+    }
+
+    public void setFavourite(boolean favourite) {
+        IsFavourite = favourite;
+    }
 }

@@ -8,10 +8,18 @@ public class ImageDetails {
     private String height;
     @SerializedName("width")
     private String width;
-    @SerializedName("mp4_size")
-    private String mp4Size;
-    @SerializedName("mp4")
-    private String mp4;
+    @SerializedName("size")
+    private String size;
+    @SerializedName("url")
+    private String url;
+
+    public String getSize() {
+        return size;
+    }
+
+    public String getUrl() {
+        return url;
+    }
 
     public String getHeight() {
         return height;
@@ -29,20 +37,5 @@ public class ImageDetails {
         this.width = width;
     }
 
-    public String getMp4Size() {
-        return mp4Size;
-    }
-
-    public void setMp4Size(String mp4Size) {
-        this.mp4Size = mp4Size;
-    }
-
-    public String getMp4() {
-        return mp4;
-    }
-
-    public void setMp4(String mp4) {
-        this.mp4 = mp4;
-    }
 
 }
