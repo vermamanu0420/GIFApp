@@ -23,6 +23,19 @@ public class Util {
                 .asGif()
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .load(url)
+                .into(view);
+    }
+    public static void loadGifCenterCrop (ImageView view, String url, CircularProgressDrawable progressDrawable) {
+
+        RequestOptions options= new RequestOptions()
+                .placeholder(progressDrawable)
+                .error(R.mipmap.ic_launcher_round);
+
+        Glide.with(view.getContext())
+                .setDefaultRequestOptions(options)
+                .asGif()
+                .diskCacheStrategy(DiskCacheStrategy.ALL)
+                .load(url)
                 .centerCrop()
                 .into(view);
     }

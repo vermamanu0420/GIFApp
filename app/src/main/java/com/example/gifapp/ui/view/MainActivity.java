@@ -2,6 +2,7 @@ package com.example.gifapp.ui.view;
 
 import android.os.Bundle;
 
+import com.example.gifapp.dependencyinjection.App;
 import com.google.android.material.tabs.TabLayout;
 
 import androidx.viewpager.widget.ViewPager;
@@ -19,7 +20,6 @@ public class MainActivity extends AppCompatActivity {
 
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-
         FragmentsPagerAdapter fragmentsPagerAdapter = new FragmentsPagerAdapter(this, getSupportFragmentManager());
         ViewPager viewPager = binding.viewPager;
         viewPager.setAdapter(fragmentsPagerAdapter);

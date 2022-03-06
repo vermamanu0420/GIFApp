@@ -5,6 +5,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 
+import com.example.gifapp.database.FavouriteGif;
 import com.example.gifapp.utils.Util;
 import com.example.gifapp.databinding.GifItemBinding;
 import com.example.gifapp.model.GifData;
@@ -61,16 +62,21 @@ public class GifsListAdapter extends RecyclerView.Adapter<GifsListAdapter.GifVie
         void bind(GifData gifItem, final OnItemClickListener listener) {
 
             Util.loadGif(gifItemBinding.gifView, gifItem.getImages().getDownsizedSmall().getUrl(), Util.getProgressDrawable(gifItemBinding.gifView.getContext()));
-            if (gifItem.isFavourite())
+            gifItemBinding.delete.setVisibility(View.GONE);
+            if (gifItem.isFavourite()){
                 gifItemBinding.unFavourite.setVisibility(View.GONE);
-            else
+                gifItemBinding.favourite.setVisibility(View.VISIBLE);
+            } else{
                 gifItemBinding.favourite.setVisibility(View.GONE);
+                gifItemBinding.unFavourite.setVisibility(View.VISIBLE);
+            }
+
 
             if (gifItemBinding.favourite.getVisibility() == View.VISIBLE)
-                gifItemBinding.favourite.setOnClickListener(v -> listener.onItemClick(gifItem));
+                gifItemBinding.favourite.setOnClickListener(v -> listener.onFavClick(new FavouriteGif(0,gifItem.getId(),gifItem.getImages().getDownsizedSmall().getUrl())));
 
             if (gifItemBinding.unFavourite.getVisibility() == View.VISIBLE)
-                gifItemBinding.unFavourite.setOnClickListener(v -> listener.onItemClick(gifItem));
+                gifItemBinding.unFavourite.setOnClickListener(v -> listener.onUnFavClick(new FavouriteGif(0,gifItem.getId(),gifItem.getImages().getDownsizedSmall().getUrl())));
 
         }
 

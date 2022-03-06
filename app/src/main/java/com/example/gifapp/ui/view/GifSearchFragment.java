@@ -18,8 +18,11 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.gifapp.R;
+import com.example.gifapp.database.FavouriteGif;
 import com.example.gifapp.databinding.FragmentMainBinding;
+import com.example.gifapp.model.GifData;
 import com.example.gifapp.ui.view.adapter.GifsListAdapter;
+import com.example.gifapp.ui.view.adapter.OnItemClickListener;
 import com.example.gifapp.viewmodel.GifsSearchViewModel;
 
 import java.util.ArrayList;
@@ -55,8 +58,18 @@ public class GifSearchFragment extends Fragment {
         View root = binding.getRoot();
 
         final RecyclerView recyclerView = binding.gifsList;
-        adapter = new GifsListAdapter(new ArrayList<>(), item -> {
-            Toast.makeText(getActivity(),"clicked",Toast.LENGTH_LONG).show();
+        adapter = new GifsListAdapter(new ArrayList<>(), new OnItemClickListener() {
+            @Override
+            public void onUnFavClick(FavouriteGif item) {
+                Toast.makeText(getActivity(),"Adding to favorites",Toast.LENGTH_LONG).show();
+                gifsSearchViewModel.InsertData(item);
+
+            }
+            @Override
+            public void onFavClick(FavouriteGif item) {
+                Toast.makeText(getActivity(),"Removing to favorites",Toast.LENGTH_LONG).show();
+                gifsSearchViewModel.DeleteData(item);
+            }
         });
         recyclerView.setLayoutManager(new LinearLayoutManager(root.getContext()));
         recyclerView.setAdapter(adapter);

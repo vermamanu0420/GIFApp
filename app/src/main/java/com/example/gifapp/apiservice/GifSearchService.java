@@ -1,7 +1,10 @@
 package com.example.gifapp.apiservice;
 
-import com.example.gifapp.dependencyinjection.DaggerApiComponent;
+import android.app.Application;
+
+import com.example.gifapp.dependencyinjection.App;
 import com.example.gifapp.model.GifDataModel;
+import com.example.gifapp.viewmodel.GifsSearchViewModel;
 
 import javax.inject.Inject;
 
@@ -15,14 +18,14 @@ public class GifSearchService {
     @Inject
     public GifSearchApi api;
 
-    private GifSearchService()
+    private GifSearchService(Application application)
     {
-        DaggerApiComponent.create().inject(this);
+        ((App)application).getApiComponent().inject(this);
     }
 
-    public static GifSearchService getInstance() {
+    public static GifSearchService getInstance(Application application) {
         if (instance == null) {
-            instance = new GifSearchService();
+            instance = new GifSearchService(application);
         }
         return instance;
     }

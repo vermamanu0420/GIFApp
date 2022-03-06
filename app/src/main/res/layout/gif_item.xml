@@ -15,6 +15,13 @@
         android:layout_height="24dp"
         android:layout_gravity="right"
         android:background="@drawable/ic_favorite_grey_24"/>
+
+    <ImageButton
+        android:id="@+id/delete"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:layout_gravity="right"
+        android:background="@drawable/ic_close_24"/>
     <ImageButton
         android:id="@+id/favourite"
         android:layout_width="24dp"
