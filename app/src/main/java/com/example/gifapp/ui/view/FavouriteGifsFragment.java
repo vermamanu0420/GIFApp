@@ -56,7 +56,7 @@ public class FavouriteGifsFragment extends Fragment {
         if (getArguments() != null) {
             //position = getArguments().getString(ARG_PARAM1);
         }
-        gifsSearchViewModel = new ViewModelProvider(this).get(GifsSearchViewModel.class);
+        gifsSearchViewModel = new ViewModelProvider(getActivity()).get(GifsSearchViewModel.class);
     }
 
     @Override
@@ -70,7 +70,7 @@ public class FavouriteGifsFragment extends Fragment {
             @Override
             public void onUnFavClick(FavouriteGif item) {
                 Toast.makeText(getActivity(),"Removing from favorites",Toast.LENGTH_LONG).show();
-                gifsSearchViewModel.DeleteData(item);
+                gifsSearchViewModel.DeleteFavourite(item);
             }
             @Override
             public void onFavClick(FavouriteGif item) { }

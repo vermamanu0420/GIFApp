@@ -37,8 +37,6 @@ public class GifsSearchViewModel extends AndroidViewModel {
     private int offset = 0;
     private final int LIMIT = 20;
 
-
-
     @Inject
     GifSearchService gifSearchService;
 
@@ -54,20 +52,20 @@ public class GifsSearchViewModel extends AndroidViewModel {
         Toast.makeText(application, (CharSequence) favouriteGifs.getValue(), Toast.LENGTH_LONG).show();
     }
 
-    public void InsertData(FavouriteGif fav){
+    public void InsertFavourite(FavouriteGif fav){
         favouritesDatabase.FavouritesDao().insert(fav);
         UpdateData();
     }
 
-    public void DeleteData(FavouriteGif item) {
+    public void DeleteFavourite(FavouriteGif item) {
         favouritesDatabase.FavouritesDao().delete(item);
         UpdateData();
     }
 
-    public LiveData<List<FavouriteGif>> getAllNotes() {
-        return favouriteGifs;
+    public void DeleteFavouriteBYId(String gifId) {
+        favouritesDatabase.FavouritesDao().deleteItem(gifId);
+        UpdateData();
     }
-
 
     public void fetchGifs(String searchTerm, boolean resetOffeset) {
         if (resetOffeset){
@@ -95,7 +93,6 @@ public class GifsSearchViewModel extends AndroidViewModel {
         );
     }
 
-
     public void fetchTrendingGifs(boolean resetOffeset) {
         if (resetOffeset){
             currentGifsList.clear();
@@ -112,7 +109,6 @@ public class GifsSearchViewModel extends AndroidViewModel {
                                 offset += LIMIT;
                                 currentGifsList.addAll(apiGifDataResponse.getData());
                                 UpdateData();
-
                             }
 
                             @Override
@@ -128,13 +124,14 @@ public class GifsSearchViewModel extends AndroidViewModel {
         for(int i=0 ; i < currentGifsList.size() ; i++)
         {
             int count = favouritesDatabase.FavouritesDao().checkArticle(currentGifsList.get(i).getId());
-            if (count > 0) {
+            if (count > 0)
                 currentGifsList.get(i).setFavourite(true);
-            }
+            else
+                currentGifsList.get(i).setFavourite(false);
         }
+
         gifMutableLGifLiveData.setValue(currentGifsList);
     }
-
 
     public MutableLiveData<List<GifData>> getGifMutableLGifLiveData() {
         return gifMutableLGifLiveData;
@@ -143,6 +140,4 @@ public class GifsSearchViewModel extends AndroidViewModel {
     public LiveData<List<FavouriteGif>> getFavouriteGifs() {
         return favouriteGifs;
     }
-
-
 }

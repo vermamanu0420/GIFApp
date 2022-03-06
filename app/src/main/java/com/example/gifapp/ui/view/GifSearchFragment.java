@@ -6,13 +6,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
-import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.annotation.Nullable;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -20,7 +17,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.gifapp.R;
 import com.example.gifapp.database.FavouriteGif;
 import com.example.gifapp.databinding.FragmentMainBinding;
-import com.example.gifapp.model.GifData;
 import com.example.gifapp.ui.view.adapter.GifsListAdapter;
 import com.example.gifapp.ui.view.adapter.OnItemClickListener;
 import com.example.gifapp.viewmodel.GifsSearchViewModel;
@@ -46,7 +42,7 @@ public class GifSearchFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        gifsSearchViewModel = new ViewModelProvider(this).get(GifsSearchViewModel.class);
+        gifsSearchViewModel = new ViewModelProvider(getActivity()).get(GifsSearchViewModel.class);
     }
 
     @Override
@@ -62,13 +58,13 @@ public class GifSearchFragment extends Fragment {
             @Override
             public void onUnFavClick(FavouriteGif item) {
                 Toast.makeText(getActivity(),"Adding to favorites",Toast.LENGTH_LONG).show();
-                gifsSearchViewModel.InsertData(item);
+                gifsSearchViewModel.InsertFavourite(item);
 
             }
             @Override
             public void onFavClick(FavouriteGif item) {
                 Toast.makeText(getActivity(),"Removing to favorites",Toast.LENGTH_LONG).show();
-                gifsSearchViewModel.DeleteData(item);
+                gifsSearchViewModel.DeleteFavouriteBYId(item.gifId);
             }
         });
         recyclerView.setLayoutManager(new LinearLayoutManager(root.getContext()));

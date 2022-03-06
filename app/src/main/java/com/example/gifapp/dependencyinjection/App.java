@@ -12,7 +12,7 @@ public class App extends Application {
                     .apiModule(new ApiModule(this))
                     .build();
         }
-        
+
         public ApiComponent getApiComponent() {
             return apiComponent;
         }

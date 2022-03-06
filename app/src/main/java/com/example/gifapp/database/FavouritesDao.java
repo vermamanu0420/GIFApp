@@ -19,8 +19,8 @@ public interface FavouritesDao {
     @Delete
     void delete(FavouriteGif favouriteGif);
 
-    @Query("DELETE FROM favourite_gifs")
-    public void nukeTable();
+    @Query("DELETE FROM favourite_gifs where gif_id =:gifId")
+    public void deleteItem(String gifId);
 
     @Query("select Count() from favourite_gifs where gif_id =:gifId")
     int checkArticle(String gifId);
