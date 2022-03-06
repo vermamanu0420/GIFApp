@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">GIFApp</string>
+    <string name="app_name">GIF App</string>
     <string name="tab_text_1">GIF Search</string>
     <string name="tab_text_2">Favourites</string>
     <!-- TODO: Remove or change this placeholder text -->
