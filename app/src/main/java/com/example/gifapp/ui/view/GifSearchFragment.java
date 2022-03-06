@@ -24,9 +24,6 @@ import com.example.gifapp.viewmodel.GifsSearchViewModel;
 
 import java.util.ArrayList;
 
-/**
- * A placeholder fragment containing a simple view.
- */
 public class GifSearchFragment extends Fragment {
 
     private static final String ARG_SECTION_NUMBER = "section_number";
@@ -61,10 +58,13 @@ public class GifSearchFragment extends Fragment {
         adapter = new GifsListAdapter(new ArrayList<>(), item -> {
             Toast.makeText(getActivity(),"clicked",Toast.LENGTH_LONG).show();
         });
-
         recyclerView.setLayoutManager(new LinearLayoutManager(root.getContext()));
         recyclerView.setAdapter(adapter);
+
         observerViewModel();
+
+        gifsSearchViewModel.fetchTrendingGifs(true);
+
         binding.searchButton.setOnClickListener(v -> {
             gifsSearchViewModel.fetchGifs(String.valueOf(binding.searchTextview.getText()), true);
         });
@@ -81,7 +81,10 @@ public class GifSearchFragment extends Fragment {
             public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
                 if (!recyclerView.canScrollVertically(1)) {
-                    gifsSearchViewModel.fetchGifs(binding.searchTextview.getText().toString(), false);
+                    if (!binding.searchTextview.getText().toString().equals(""))
+                        gifsSearchViewModel.fetchGifs(binding.searchTextview.getText().toString(), false);
+                    else
+                        gifsSearchViewModel.fetchTrendingGifs(false);
                 }
             }
         });
@@ -96,7 +99,6 @@ public class GifSearchFragment extends Fragment {
     }
 
     private void observerViewModel() {
-
         gifsSearchViewModel.getGifMutableLGifLiveData().observe(getViewLifecycleOwner(), items -> {
             binding.listError.setVisibility(View.GONE);
             adapter.updateImages(items);

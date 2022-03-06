@@ -23,10 +23,10 @@ import io.reactivex.schedulers.Schedulers;
 
 public class GifsSearchViewModel extends ViewModel {
 
-    private MutableLiveData<List<GifData>> gifMutableLGifLiveData = new MutableLiveData<>();
-    private ArrayList<GifData> currentGifsList = new ArrayList<>();
+    private final MutableLiveData<List<GifData>> gifMutableLGifLiveData = new MutableLiveData<>();
+    private final ArrayList<GifData> currentGifsList = new ArrayList<>();
     private int offset = 0;
-    private int LIMIT = 20;
+    private final int LIMIT = 20;
 
 
 
@@ -41,6 +41,10 @@ public class GifsSearchViewModel extends ViewModel {
     }
 
     public void fetchGifs(String searchTerm, boolean resetOffeset) {
+        if (resetOffeset){
+            currentGifsList.clear();
+            offset = 0;
+        }
 
         disposable.add(
                 gifSearchService.getSearchedGifs(searchTerm, offset, LIMIT)
@@ -49,11 +53,33 @@ public class GifsSearchViewModel extends ViewModel {
                         .subscribeWith(new DisposableSingleObserver<GifDataModel>() {
                             @Override
                             public void onSuccess(@NonNull GifDataModel apiGifDataResponse) {
-                                if (resetOffeset){
-                                    currentGifsList.clear();
-                                    offset = 0;
-                                }else
-                                    offset += LIMIT;
+                                offset += LIMIT;
+                                currentGifsList.addAll(apiGifDataResponse.getData());
+                                gifMutableLGifLiveData.setValue(currentGifsList);
+                            }
+
+                            @Override
+                            public void onError(@NonNull Throwable e) {
+                                e.printStackTrace();
+                            }
+                        })
+        );
+    }
+
+    public void fetchTrendingGifs(boolean resetOffeset) {
+        if (resetOffeset){
+            currentGifsList.clear();
+            offset = 0;
+        }
+
+        disposable.add(
+                gifSearchService.getTrendingGifs(offset, LIMIT)
+                        .subscribeOn(Schedulers.newThread())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribeWith(new DisposableSingleObserver<GifDataModel>() {
+                            @Override
+                            public void onSuccess(@NonNull GifDataModel apiGifDataResponse) {
+                                offset += LIMIT;
                                 currentGifsList.addAll(apiGifDataResponse.getData());
                                 gifMutableLGifLiveData.setValue(currentGifsList);
                             }
