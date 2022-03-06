@@ -112,13 +112,23 @@ public class GifSearchFragment extends Fragment {
             binding.listError.setVisibility(View.GONE);
             adapter.updateImages(items);
             binding.loadingView.setVisibility(View.GONE);
-
             if (items == null || items.size() == 0) {
                 binding.listError.setVisibility(View.VISIBLE);
                 binding.listError.setText(R.string.loadingDataErrorMsg);
             }
         });
 
+        gifsSearchViewModel.dataLoadError.observe(getViewLifecycleOwner(), isError -> {
+            if (isError != null) {
+                binding.listError.setVisibility(isError ? View.VISIBLE : View.GONE);
+            }
 
+        });
+
+        gifsSearchViewModel.loading.observe(getViewLifecycleOwner(), isLoading -> {
+            if (isLoading != null) {
+                binding.loadingView.setVisibility(isLoading ? View.VISIBLE : View.GONE);
+            }
+        });
     }
 }

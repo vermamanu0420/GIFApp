@@ -31,8 +31,6 @@ public class FavouriteGifsFragment extends Fragment {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "position";
 
-    // TODO: Rename and change types of parameters
-    private String position;
     private GifsSearchViewModel gifsSearchViewModel;
     private FragmentFavoutitesBinding binding;
     private FavouritesGridAdapter adapter;
@@ -53,9 +51,6 @@ public class FavouriteGifsFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            //position = getArguments().getString(ARG_PARAM1);
-        }
         gifsSearchViewModel = new ViewModelProvider(getActivity()).get(GifsSearchViewModel.class);
     }
 
@@ -83,6 +78,10 @@ public class FavouriteGifsFragment extends Fragment {
 
     private void observerViewModel() {
         gifsSearchViewModel.getFavouriteGifs().observe(getViewLifecycleOwner(), items -> {
+            if (items == null || items.size() == 0)
+                binding.favouriteNoData.setVisibility(View.VISIBLE);
+            else
+                binding.favouriteNoData.setVisibility(View.GONE);
             adapter.updateImages(items);
         });
     }

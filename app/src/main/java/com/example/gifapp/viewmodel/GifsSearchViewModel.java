@@ -17,6 +17,7 @@ import java.util.List;
 import javax.inject.Inject;
 
 import androidx.annotation.NonNull;
+import androidx.arch.core.internal.SafeIterableMap;
 import androidx.arch.core.util.Function;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
@@ -44,6 +45,8 @@ public class GifsSearchViewModel extends AndroidViewModel {
     FavouriteGifsDatabase favouritesDatabase;
 
     private CompositeDisposable disposable = new CompositeDisposable();
+    public MutableLiveData<Boolean> dataLoadError = new MutableLiveData<Boolean>();
+    public MutableLiveData<Boolean> loading = new MutableLiveData<Boolean>();
 
     public GifsSearchViewModel(@NonNull Application application) {
         super(application);
@@ -68,6 +71,7 @@ public class GifsSearchViewModel extends AndroidViewModel {
     }
 
     public void fetchGifs(String searchTerm, boolean resetOffeset) {
+        loading.setValue(true);
         if (resetOffeset){
             currentGifsList.clear();
             offset = 0;
@@ -80,6 +84,8 @@ public class GifsSearchViewModel extends AndroidViewModel {
                         .subscribeWith(new DisposableSingleObserver<GifDataModel>() {
                             @Override
                             public void onSuccess(@NonNull GifDataModel apiGifDataResponse) {
+                                dataLoadError.setValue(false);
+                                loading.setValue(false);
                                 offset += LIMIT;
                                 currentGifsList.addAll(apiGifDataResponse.getData());
                                 UpdateData();
@@ -87,6 +93,8 @@ public class GifsSearchViewModel extends AndroidViewModel {
 
                             @Override
                             public void onError(@NonNull Throwable e) {
+                                dataLoadError.setValue(true);
+                                loading.setValue(false);
                                 e.printStackTrace();
                             }
                         })
@@ -94,6 +102,7 @@ public class GifsSearchViewModel extends AndroidViewModel {
     }
 
     public void fetchTrendingGifs(boolean resetOffeset) {
+        loading.setValue(true);
         if (resetOffeset){
             currentGifsList.clear();
             offset = 0;
@@ -106,6 +115,8 @@ public class GifsSearchViewModel extends AndroidViewModel {
                         .subscribeWith(new DisposableSingleObserver<GifDataModel>() {
                             @Override
                             public void onSuccess(@NonNull GifDataModel apiGifDataResponse) {
+                                dataLoadError.setValue(true);
+                                loading.setValue(false);
                                 offset += LIMIT;
                                 currentGifsList.addAll(apiGifDataResponse.getData());
                                 UpdateData();
@@ -113,6 +124,8 @@ public class GifsSearchViewModel extends AndroidViewModel {
 
                             @Override
                             public void onError(@NonNull Throwable e) {
+                                dataLoadError.setValue(true);
+                                loading.setValue(false);
                                 e.printStackTrace();
                             }
                         })
