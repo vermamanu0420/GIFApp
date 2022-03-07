@@ -26,7 +26,6 @@ import java.util.ArrayList;
 public class GifSearchFragment extends Fragment {
 
     private static final String ARG_SECTION_NUMBER = "section_number";
-
     private GifsSearchViewModel gifsSearchViewModel;
     private FragmentMainBinding binding;
     private GifsListAdapter adapter;

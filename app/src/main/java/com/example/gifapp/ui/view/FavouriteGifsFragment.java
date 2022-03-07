@@ -13,33 +13,26 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.example.gifapp.database.FavouriteGif;
-import com.example.gifapp.databinding.FragmentFavoutitesBinding;
+import com.example.gifapp.databinding.FragmentFavouritesBinding;
 import com.example.gifapp.ui.view.adapter.FavouritesGridAdapter;
 import com.example.gifapp.ui.view.adapter.OnItemClickListener;
 import com.example.gifapp.viewmodel.GifsSearchViewModel;
 
 import java.util.ArrayList;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link FavouriteGifsFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
-public class FavouriteGifsFragment extends Fragment {
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
+public class FavouriteGifsFragment extends Fragment {
+    
     private static final String ARG_PARAM1 = "position";
 
     private GifsSearchViewModel gifsSearchViewModel;
-    private FragmentFavoutitesBinding binding;
+    private FragmentFavouritesBinding binding;
     private FavouritesGridAdapter adapter;
 
     public FavouriteGifsFragment() {
         // Required empty public constructor
     }
 
-    // TODO: Rename and change types and number of parameters
     public static FavouriteGifsFragment newInstance(Integer param2) {
         FavouriteGifsFragment fragment = new FavouriteGifsFragment();
         Bundle args = new Bundle();
@@ -58,7 +51,7 @@ public class FavouriteGifsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        binding = FragmentFavoutitesBinding.inflate(inflater, container, false);
+        binding = FragmentFavouritesBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
         final RecyclerView recyclerView = binding.favGifsList;
         adapter = new FavouritesGridAdapter(new ArrayList<>(), new OnItemClickListener() {

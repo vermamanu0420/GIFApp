@@ -10,10 +10,6 @@ import androidx.fragment.app.FragmentPagerAdapter;
 
 import com.example.gifapp.R;
 
-/**
- * A [FragmentPagerAdapter] that returns a fragment corresponding to
- * one of the sections/tabs/pages.
- */
 public class FragmentsPagerAdapter extends FragmentPagerAdapter {
 
     @StringRes

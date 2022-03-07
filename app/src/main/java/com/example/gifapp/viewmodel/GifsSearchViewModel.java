@@ -70,9 +70,9 @@ public class GifsSearchViewModel extends AndroidViewModel {
         UpdateData();
     }
 
-    public void fetchGifs(String searchTerm, boolean resetOffeset) {
+    public void fetchGifs(String searchTerm, boolean resetOffset) {
         loading.setValue(true);
-        if (resetOffeset){
+        if (resetOffset){
             currentGifsList.clear();
             offset = 0;
         }
@@ -101,9 +101,9 @@ public class GifsSearchViewModel extends AndroidViewModel {
         );
     }
 
-    public void fetchTrendingGifs(boolean resetOffeset) {
+    public void fetchTrendingGifs(boolean resetOffset) {
         loading.setValue(true);
-        if (resetOffeset){
+        if (resetOffset){
             currentGifsList.clear();
             offset = 0;
         }
